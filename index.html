@@ -10,6 +10,7 @@
         :root {
             --primary: #1a237e;  /* Deep blue */
             --white: #ffffff;
+            --light-bg: rgba(255,255,255,0.9);
         }
         
         * {
@@ -22,7 +23,38 @@
             font-family: 'Montserrat', sans-serif;
             line-height: 1.6;
             color: var(--primary);
-            background-color: var(--white);
+            overflow-x: hidden;
+        }
+        
+        /* Background Photo Gallery */
+        .background-gallery {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+        }
+        
+        .background-photo {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+        
+        .background-photo.active {
+            opacity: 1; /* Adjust transparency as needed */
+        }
+        
+        /* Content Container with Semi-transparent Background */
+        .content-container {
+            background-color: var(--light-bg);
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.1);
         }
         
         .container {
@@ -33,11 +65,23 @@
         
         /* Header */
         header {
-            background-color: var(--white);
+            background-color: var(--light-bg);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 100;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         nav {
@@ -52,6 +96,11 @@
             font-weight: 700;
             color: var(--primary);
             text-decoration: none;
+            transition: transform 0.3s;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
         }
         
         .nav-links {
@@ -64,28 +113,42 @@
             color: var(--primary);
             text-decoration: none;
             font-weight: 500;
-            transition: opacity 0.3s;
+            position: relative;
+            padding: 5px 0;
         }
         
-        .nav-links a:hover {
-            opacity: 0.8;
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
         }
         
-        .nav-btn {
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .btn {
             display: inline-block;
             background-color: var(--primary);
             color: var(--white);
-            padding: 10px 20px;
+            padding: 12px 25px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
-            border: none;
+            border: 2px solid var(--primary);
         }
         
-        .nav-btn:hover {
-            background-color: rgba(26, 35, 126, 0.9);
-            transform: translateY(-2px);
+        .btn:hover {
+            background-color: transparent;
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(26, 35, 126, 0.2);
         }
         
         .mobile-menu-btn {
@@ -99,57 +162,96 @@
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(26, 35, 126, 0.7), rgba(26, 35, 126, 0.7)), url('hero-background.jpg');
-            background-size: cover;
-            background-position: center;
-            color: var(--white);
+            height: 100vh;
+            display: flex;
+            align-items: center;
             text-align: center;
-            padding: 120px 20px;
+            position: relative;
+        }
+        
+        .hero-content {
+            width: 100%;
         }
         
         .hero h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease-out 0.3s forwards;
         }
         
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             max-width: 700px;
-            margin: 0 auto 30px;
+            margin: 0 auto 40px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease-out 0.6s forwards;
         }
         
-        .btn {
-            display: inline-block;
-            background-color: var(--white);
-            color: var(--primary);
-            padding: 12px 25px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
+        .hero .btn {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease-out 0.9s forwards;
         }
         
-        .btn:hover {
-            background-color: rgba(255,255,255,0.9);
-            transform: translateY(-2px);
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
-        /* Sections */
-        section {
-            padding: 80px 0;
+        /* Floating Animation */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* About Section */
+        .about {
+            padding: 100px 0;
         }
         
         .section-title {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
         }
         
         .section-title h2 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin-bottom: 15px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.3s forwards;
         }
         
-        /* About Section */
+        .section-title p {
+            font-size: 1.2rem;
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.6s forwards;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
         .about-content {
             display: flex;
             gap: 50px;
@@ -160,17 +262,38 @@
             flex: 1;
         }
         
+        .about-text p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
         .about-image {
             flex: 1;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+            transform: scale(0.95);
+            opacity: 0;
+            animation: scaleIn 1s ease-out 0.9s forwards;
+        }
+        
+        @keyframes scaleIn {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
         
         .about-image img {
             width: 100%;
             height: auto;
             display: block;
+            transition: transform 0.5s;
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.05);
         }
         
         .stats {
@@ -182,39 +305,111 @@
         
         .stat-item {
             text-align: center;
-            padding: 20px;
+            padding: 30px 20px;
             background-color: rgba(26, 35, 126, 0.05);
             border-radius: 10px;
             border: 1px solid rgba(26, 35, 126, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
         
         .stat-item h3 {
             font-size: 2.5rem;
             margin-bottom: 5px;
+            color: var(--primary);
         }
         
-        /* Work Section (formerly Portfolio) */
+        /* Services Section */
+        .services {
+            padding: 100px 0;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 40px 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .service-card:nth-child(1) {
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+        }
+        .service-card:nth-child(2) {
+            animation: fadeInUp 1s ease-out 0.6s forwards;
+        }
+        .service-card:nth-child(3) {
+            animation: fadeInUp 1s ease-out 0.9s forwards;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
+        }
+        
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Work Section */
+        .work {
+            padding: 100px 0;
+        }
+        
         .work-categories {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin-bottom: 40px;
             flex-wrap: wrap;
         }
         
         .category-btn {
             background: none;
-            border: none;
-            font-size: 1.1rem;
+            border: 2px solid var(--primary);
+            font-size: 1rem;
             font-weight: 600;
             color: var(--primary);
             cursor: pointer;
-            padding: 8px 15px;
+            padding: 8px 20px;
             transition: all 0.3s;
-            border-radius: 20px;
+            border-radius: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease-out forwards;
         }
         
-        .category-btn.active {
+        .category-btn:nth-child(1) { animation-delay: 0.3s; }
+        .category-btn:nth-child(2) { animation-delay: 0.4s; }
+        .category-btn:nth-child(3) { animation-delay: 0.5s; }
+        .category-btn:nth-child(4) { animation-delay: 0.6s; }
+        
+        .category-btn.active, .category-btn:hover {
             background-color: var(--primary);
             color: var(--white);
         }
@@ -231,6 +426,14 @@
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             aspect-ratio: 4/3;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+        }
+        
+        .gallery-item.show {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .gallery-item img {
@@ -241,7 +444,7 @@
         }
         
         .gallery-item:hover img {
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         .gallery-item-caption {
@@ -260,39 +463,119 @@
             transform: translateY(0);
         }
         
-        /* Recent Projects */
-        .featured-project {
-            display: flex;
-            gap: 40px;
-            align-items: center;
-            margin-top: 40px;
+        /* Blog Section */
+        .blog {
+            padding: 100px 0;
         }
         
-        .featured-project-image {
-            flex: 1;
+        .blog-posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .blog-card {
+            background: var(--white);
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
         }
         
-        .featured-project-image img {
+        .blog-card:nth-child(1) { animation: fadeInUp 1s ease-out 0.3s forwards; }
+        .blog-card:nth-child(2) { animation: fadeInUp 1s ease-out 0.6s forwards; }
+        .blog-card:nth-child(3) { animation: fadeInUp 1s ease-out 0.9s forwards; }
+        
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .blog-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .blog-image img {
             width: 100%;
-            height: auto;
-            display: block;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
         }
         
-        .featured-project-text {
-            flex: 1;
+        .blog-card:hover .blog-image img {
+            transform: scale(1.1);
         }
         
-        /* Contact Form */
+        .blog-content {
+            padding: 25px;
+        }
+        
+        .blog-date {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .blog-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            transition: color 0.3s;
+        }
+        
+        .blog-card:hover .blog-title {
+            color: var(--primary);
+        }
+        
+        .blog-excerpt {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+        
+        .read-more {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+        
+        .read-more i {
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .read-more:hover {
+            transform: translateX(5px);
+        }
+        
+        .read-more:hover i {
+            transform: translateX(5px);
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+        }
+        
         .contact-form {
             max-width: 600px;
             margin: 0 auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transform: scale(0.95);
+            opacity: 0;
+            animation: scaleIn 1s ease-out 0.6s forwards;
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         .form-group label {
@@ -304,33 +587,55 @@
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 12px;
+            padding: 12px 15px;
             border: 1px solid rgba(26, 35, 126, 0.3);
-            border-radius: 4px;
+            border-radius: 6px;
             font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
         }
         
         .form-group textarea {
             min-height: 150px;
+            resize: vertical;
         }
         
         /* Footer */
         footer {
             background-color: var(--primary);
             color: var(--white);
-            padding: 60px 0 20px;
+            padding: 80px 0 30px;
         }
         
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 40px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
         
         .footer-column h3 {
             font-size: 1.3rem;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background-color: var(--white);
+            bottom: -10px;
+            left: 0;
         }
         
         .footer-links {
@@ -338,32 +643,48 @@
         }
         
         .footer-links li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
         
         .footer-links a {
             color: rgba(255,255,255,0.8);
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            display: inline-block;
         }
         
         .footer-links a:hover {
             color: var(--white);
+            transform: translateX(5px);
         }
         
         .social-links {
             display: flex;
             gap: 15px;
+            margin-top: 20px;
         }
         
         .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
             color: var(--white);
-            font-size: 1.2rem;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--white);
+            color: var(--primary);
+            transform: translateY(-5px);
         }
         
         .copyright {
             text-align: center;
-            padding-top: 20px;
+            padding-top: 30px;
             border-top: 1px solid rgba(255,255,255,0.1);
             color: rgba(255,255,255,0.7);
             font-size: 0.9rem;
@@ -381,7 +702,7 @@
                 left: -100%;
                 width: 100%;
                 height: calc(100vh - 80px);
-                background-color: var(--white);
+                background-color: var(--light-bg);
                 flex-direction: column;
                 align-items: center;
                 padding: 40px 0;
@@ -393,15 +714,11 @@
                 left: 0;
             }
             
-            .hero {
-                padding: 100px 20px;
-            }
-            
             .hero h1 {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
             }
             
-            .about-content, .featured-project {
+            .about-content {
                 flex-direction: column;
             }
             
@@ -409,253 +726,336 @@
                 grid-template-columns: 1fr 1fr;
             }
             
-            .footer-content {
-                grid-template-columns: 1fr;
+            .service-card, .blog-card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            
+            .contact-form {
+                padding: 30px 20px;
             }
         }
         
         @media (max-width: 480px) {
             .hero h1 {
-                font-size: 1.8rem;
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
             }
             
             .stats {
                 grid-template-columns: 1fr;
             }
             
-            .gallery {
+            .gallery, .blog-posts {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav>
-                <a href="#" class="logo">KritanPokhrel</a>
-                <button class="mobile-menu-btn">☰</button>
-                <div class="nav-links">
-                    <a href="#about">About</a>
-                    <a href="#work">Work</a>
-                    <a href="#projects">Projects</a>
-                    <a href="#contact">Contact</a>
+    <!-- Background Photo Gallery -->
+    <div class="background-gallery">
+        <div class="background-photo" style="background-image: url('bg1.jpg');"></div>
+        <div class="background-photo" style="background-image: url('bg2.jpg');"></div>
+        <div class="background-photo" style="background-image: url('bg3.jpg');"></div>
+        <div class="background-photo" style="background-image: url('bg4.jpg');"></div>
+    </div>
+    
+    <!-- Content Container -->
+    <div class="content-container">
+        <!-- Header -->
+        <header>
+            <div class="container">
+                <nav>
+                    <a href="#" class="logo">KritanPokhrel</a>
+                    <button class="mobile-menu-btn">☰</button>
+                    <div class="nav-links">
+                        <a href="#about">About</a>
+                        <a href="#services">Services</a>
+                        <a href="#work">Work</a>
+                        <a href="#blog">Blog</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>WELCOME TO MY WORLD</h1>
+                    <p></p>
+                    <a href="#work" class="btn floating">Explore My Work</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <div class="section-title">
+                    <h2>About Me</h2>
+                    <p>Get to know the person behind the work</p>
+                </div>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>I'm Kritan Pokhrel, a civil engineering student at Paschimanchal Campus with a passion for creative design and technical innovation. Born in 2004, I bring youthful energy and fresh perspectives to every project.</p>
+                        
+                        <p>What excites me most is the intersection of engineering and technology - particularly how AI can revolutionize traditional design processes. I'm constantly exploring ways to merge my technical education with my creative skills.</p>
+                        
+                        <div class="stats">
+                            <div class="stat-item">
+                                <h3>5+</h3>
+                                <p>Projects Completed</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3>4+</h3>
+                                <p>Years Experience</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3>5</h3>
+                                <p>Satisfied Clients</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3>100%</h3>
+                                <p>Passion Driven</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <img src="profile.jpg" alt="Kritan Pokhrel">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="services">
+            <div class="container">
+                <div class="section-title">
+                    <h2>My Services</h2>
+                    <p>How I can help bring your vision to life</p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <h3>Graphics Design</h3>
+                        <p>From logos to complete branding packages, I create visually striking designs that communicate your message effectively.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <h3>Motion Graphics</h3>
+                        <p>Engaging animations and video content that captures attention and tells your story in dynamic ways.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-ruler-combined"></i>
+                        </div>
+                        <h3>CAD Drafting</h3>
+                        <p>Precision technical drawings and 3D models for architectural and engineering projects.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Work Section -->
+        <section id="work" class="work">
+            <div class="container">
+                <div class="section-title">
+                    <h2>From my Gallery</h2>
+                    <p>A selection of my recent photographs</p>
+                </div>
+                
+                 <div class="work-categories">
+                    <button class="category-btn active">All</button>
+                    <button class="category-btn">Portrait</button>
+                    <button class="category-btn">Landscape</button>
+                    <button class="category-btn">Cultural</button> 
+                </div>
+                
+                <div class="gallery">
+                    <div class="gallery-item show">
+                        <img src="work1.jpg" alt="Brand Identity Project">
+                        <div class="gallery-item-caption">
+                            <h3>Portrait</h3>
+                            <p>At Holi celebration in Lakeside Pokhara</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item show">
+                        <img src="work2.jpg" alt="Animation Project">
+                        <div class="gallery-item-caption">
+                            <h3>Moments Before Sunrise</h3>
+                            <p>Mardi View Point—soft light, quiet people, sunrise coming.
+</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item show">
+                        <img src="work3.jpg" alt="CAD Project">
+                        <div class="gallery-item-caption">
+                            <h3>Serene reflections at Fewa Lake</h3>
+                            <p>The kayak drifts peacefully, surrounded by distant mountains fading into the dusk. A moment of pure serenity.</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item show">
+                        <img src="work4.jpg" alt="Social Media Design">
+                        <div class="gallery-item-caption">
+                            <h3>The Blue Diamond </h3>
+                            <p>Shey Phoksundo Lake, Nepal’s deepest at 3,589 meters, dazzles with turquoise waters, towering peaks, and a sacred Tibetan aura.
+
+</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item show">
+                        <img src="bg1.jpg" alt="Product Animation">
+                        <div class="gallery-item-caption">
+                            <h3>Paragliding in Pokhara</h3>
+                            <p>Sky full of parachutes, adding even more beauty to the skies of Pokhara
+</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item show">
+                        <img src="bg2.jpg" alt="Engineering Project">
+                        <div class="gallery-item-caption">
+                            <h3> The Swastika
+</h3>
+                            <p>People ignite a swastika as part of Hindu rituals.
+</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section id="blog" class="blog">
+            <div class="container">
+                <div class="section-title">
+                    <h2>From My Blog</h2>
+                    <p>Thoughts on design, engineering, and technology</p>
+                </div>
+                
+                <div class="blog-posts">
+                    <article class="blog-card">
+                        <div class="blog-image">
+                            <img src="class.jpg" alt="Design Thinking">
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-date">June 10, 2025</div>
+                            <h3 class="blog-title">Reviving Civil Engineering in Nepal: Challenges and Solutions</h3>
+                            <p class="blog-excerpt">Civil engineering is a cornerstone of Nepal's development, yet the sector faces a decline in job opportunities, quality education, and industry support</p>
+                            <a href="blog-post.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
                     
-                </div>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Kritan Pokhrel</h1>
-            <p>यत्र दृष्टिः तत्र सृष्टिः.</p>
-            <a href="#work" class="btn">View Work</a>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <div class="section-title">
-                <h2>About Kritan</h2>
-            </div>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>I'm a civil engineering student at Paschimanchal Campus, Pokhara, bringing a fresh perspective as part of the 2004 generation. While deeply engaged in structural studies, I'm equally passionate about AI and emerging technologies. My approach blends analytical engineering thinking with creative problem-solving, constantly exploring how digital innovation can transform traditional construction practices. Young, energetic, and always curious, I thrive at the intersection of technical precision and creative expression.</p>
+                    <article class="blog-card">
+                        <div class="blog-image">
+                            <img src=".jpg" alt="">
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-date"></div>
+                            <h3 class="blog-title"></h3>
+                            <p class="blog-excerpt"></p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
                     
-                    <div class="stats">
-                        <div class="stat-item">
-                            <h3>Graphics Designing</h3>
-                            <p><br>Adobe Photoshop</br>
-                          <br>Adobe Illustrator</br>
-                          <br>Figma</br> </p>
+                    <article class="blog-card">
+                        <div class="blog-image">
+                            <img src="blog3.jpg" alt="">
                         </div>
-                        <div class="stat-item">
-                            <h3>Video Editing</h3>
-                            <p><br>PremierePro</br>
-                            <br>DaVinci Resolve</br>
-                            <br>Finalcut Pro</br>
-                        </p>
+                        <div class="blog-content">
+                            <div class="blog-date"></div>
+                            <h3 class="blog-title"></h3>
+                            <p class="blog-excerpt"></p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
                         </div>
-                        <div class="stat-item">
-                            <h3>CAD</h3>
-                            <p>
-                                <br>AutoCAD</br>
-                                  <br>Civil3D</br>
-                         </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Get In Touch</h2>
+                    <p>Ready to start your project? Let's connect!</p>
+                </div>
+                
+                <div class="contact-form">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" required>
                         </div>
-                        <div class="stat-item">
-                            <h3>Motion Graphics</h3>
-                            <p>
-                                <br>Adobe After Effects</br>
-                                 <br>MAYA</br>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Project Details</label>
+                            <textarea id="message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
 
-                            </p>
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-column">
+                        <h3>Kritan Pokhrel</h3>
+                        <p> based in Pokhara, Nepal</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.facebook.com/kritan.pokharel.108801"><i class="fab fa-facebook"></i></a>
+                            <a href=""><i class="fab fa-youtube"></i></a>
+                            <a href="#"><i class="fab fa-behance"></i></a>
                         </div>
                     </div>
-                </div>
-                <div class="about-image">
-                    <img src="kritan-portrait.jpg" alt="Kritan Pokhrel">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Work Section -->
-    <section id="work" class="work">
-        <div class="container">
-            <div class="section-title">
-                <h2>My Work</h2>
-                <p>Explore my projects capturing Nepal's beauty and culture.</p>
-            </div>
-            
-            <div class="work-categories">
-                <button class="category-btn active">All</button>
-                <button class="category-btn">Nature</button>
-                <button class="category-btn">Cultural</button>
-                <button class="category-btn">Portraits</button>
-            </div>
-            
-            <div class="gallery">
-                <div class="gallery-item">
-                    <img src="sunset-phewa.jpg" alt="Sunset at Phewa Lake">
-                    <div class="gallery-item-caption">
-                        <h3>Sunset at Phewa Lake</h3>
-                        <p>Golden hour reflections on Pokhara's iconic lake</p>
+                    
+                    <div class="footer-column">
+                        <h3>Quick Links</h3>
+                        <ul class="footer-links">
+                            <li><a href="#about">About Me</a></li>
+                            <li><a href="#services">My Services</a></li>
+                            <li><a href="#work">Portfolio</a></li>
+                            <li><a href="#blog">Blog</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
                     </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="himalayas.jpg" alt="Himalayan Range">
-                    <div class="gallery-item-caption">
-                        <h3>Himalayan Range</h3>
-                        <p>Majestic peaks </p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="festival.jpg" alt="Cultural Festival">
-                    <div class="gallery-item-caption">
-                        <h3>Cultural Festival</h3>
-                        <p></p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="portrait.jpg" alt="Portrait">
-                    <div class="gallery-item-caption">
-                        <h3>Portrait</h3>
-                        <p>Character portrait</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="street.jpg" alt="Street">
-                    <div class="gallery-item-caption">
-                        <h3>Pokhara Paragliding</h3>
-                        <p></p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="2.jpg" alt="Mountain Village">
-                    <div class="gallery-item-caption">
-                        <h3>Kayaking</h3>
-                        <p></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="projects">
-        <div class="container">
-            <div class="section-title">
-                <h2>What can I offer you</h2>
-            </div>
-            
-            <div class="featured-project">
-                <div class="featured-project-image">
-                    <img src="project.jpg" alt="Featured Project">
-                </div>
-                <div class="featured-project-text">
-                    <h3>--</h3>
-                    <p>I turn ideas into stunning reality with:
-
-<br>🖌️ Design – Logos, branding, graphics</br>
-<br>🎥 Motion – Smooth animations & edits</br>
-<br>📐 Precision – Clean CAD drafting</br>
-
-<i>4+ years of making pixels perfect. Your vision, my craft—let’s create!</i></p>
-                    <a href="#work" class="btn">View Full Series</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="section-title">
-                <h2>Contact</h2>
-                <p>Get in touch for inquiries or collaborations.</p>
-            </div>
-            
-            <div class="contact-form">
-                <form>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" required></textarea>
-                    </div>
-                    <button type="submit" class="btn">Send Message</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>Kritan Pokhrel</h3>
-                    <p>Based in Pokhara, Nepal</p>
-                    <div class="social-links">
-                        <a href="https://www.instagram.com/kritan.po_kharel/"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.facebook.com/kritan.pokharel.108801"><i class="fab fa-facebook"></i></a>
-                        <a href="https://youtube.com/@kritanpokhrel?si=tPrpRYLZCImWNIA8"><i class="fab fa-youtube"></i></a>
+                    
+                    <div class="footer-column">
+                        <h3>Contact Info</h3>
+                        <ul class="footer-links">
+                            <li><i class="fas fa-map-marker-alt"></i> Pokhara, Nepal</li>
+                            <li><i class="fas fa-phone"></i> +977 9748212184</li>
+                            <li><i class="fas fa-envelope"></i> pokhrelkritan5@gmail.com</li>
+                        </ul>
                     </div>
                 </div>
                 
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#work">Work</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Contact</h3>
-                    <p>Pokhara, Nepal</p>
-                    <p>+977 9748212184</p>
-                    <p>pokhrelkritan5@gmail.com.com</p>
+                <div class="copyright">
+                    <p>&copy; 2024 Kritan Pokhrel. All rights reserved.</p>
                 </div>
             </div>
-            
-            <div class="copyright">
-                <p>© 2025 Kritan Pokhrel. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <script>
         // Mobile menu toggle
@@ -672,23 +1072,82 @@
         
         // Work filtering
         document.querySelectorAll('.category-btn').forEach(button => {
-            button.addEventListener('click', () => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
                 document.querySelectorAll('.category-btn').forEach(btn => {
                     btn.classList.remove('active');
                 });
-                button.classList.add('active');
-            });
-        });
-        
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Filter logic would go here
+                // For now just showing all items
+                document.querySelectorAll('.gallery-item').forEach(item => {
+                    item.classList.add('show');
                 });
             });
         });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Background photo gallery animation
+        const backgroundPhotos = document.querySelectorAll('.background-photo');
+        let currentPhotoIndex = 0;
+        
+        // Set initial active photo
+        backgroundPhotos[currentPhotoIndex].classList.add('active');
+        
+        // Change background photo on scroll
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.body.scrollHeight;
+            
+            // Calculate which photo should be active based on scroll position
+            const photoCount = backgroundPhotos.length;
+            const sectionHeight = documentHeight / photoCount;
+            const newIndex = Math.min(
+                Math.floor(scrollPosition / sectionHeight * photoCount),
+                photoCount - 1
+            );
+            
+            // Only update if changed
+            if (newIndex !== currentPhotoIndex) {
+                backgroundPhotos[currentPhotoIndex].classList.remove('active');
+                currentPhotoIndex = newIndex;
+                backgroundPhotos[currentPhotoIndex].classList.add('active');
+            }
+        });
+        
+        // Animate gallery items on scroll
+        const animateOnScroll = () => {
+            const galleryItems = document.querySelectorAll('.gallery-item:not(.show)');
+            galleryItems.forEach(item => {
+                const itemTop = item.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (itemTop < windowHeight - 100) {
+                    item.classList.add('show');
+                }
+            });
+        };
+        
+        // Initial check
+        animateOnScroll();
+        
+        // Check on scroll
+        window.addEventListener('scroll', animateOnScroll);
     </script>
 </body>
 </html>
